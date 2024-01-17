@@ -51,4 +51,4 @@ Api.interceptors.response.use(function (response) {
 }));
 
 
-export default Api
+export default Api;

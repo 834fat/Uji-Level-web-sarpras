@@ -10,11 +10,15 @@ const Loader = lazy(() => import('../components/Loader.jsx'));
 //import view Login
 const Login = lazy(() => import('../views/Auth/Login.jsx'));
 
-// //import view dashboard
-// const SiswaDashboard = lazy(() => import('../views/Dashboard/SiswaDashboard.jsx'));
-// const AdminDashboard = lazy(() => import('../views/Dashboard/AdminDashboard.jsx'));
-// const Pembimbing = lazy(() => import('../views/Dashboard/Pembimbing.jsx'));
-// const Wakahubin = lazy(() => import('../views/Dashboard/Wakahubin.jsx'));
+//import view Help
+const Help = lazy(() => import('../views/Auth/Help.jsx'));
+
+//import view Readme
+const Readme = lazy(() => import('../views/Auth/Readme.jsx'));
+
+//import view dashboard
+const UserDashboard = lazy(() => import('../views/Dashboard/UserDashboard.jsx'));
+const AdminDashboard = lazy(() => import('../views/Dashboard/AdminDashboard.jsx'));
 
 export default function RoutesIndex() {
   return (
@@ -28,10 +32,8 @@ export default function RoutesIndex() {
           </Suspense>
         }
       />
-      {/* <Route path="/SiswaDashboard" element={<SiswaDashboard />} />
+      <Route path="/UserDashboard" element={<UserDashboard />} />
        <Route path="/AdminDashboard" element={<AdminDashboard />} />
-       <Route path="/PembimbingDashboard" element={<Pembimbing />} />
-       <Route path="/WakahubinDashboard" element={<Wakahubin />} /> */}
     </Routes>
   );
 }

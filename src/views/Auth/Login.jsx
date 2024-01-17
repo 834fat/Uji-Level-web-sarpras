@@ -1,22 +1,46 @@
 import React, { useState } from 'react';
+import skanicImage from '../../assets/images/skanic.png';
+import sarprasImage from '../../assets/images/sarpras.png';
+//import API
+import Api from '../../api';
 
 const Login = () => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    // Logika untuk login disini
-  }
+
+    try {
+      const response = await fetch('YOUR_API_ENDPOINT', {
+        method: 'POST', // or 'GET', 'PUT', etc.
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ username, password }),
+      });
+
+      if (response.ok) {
+        // Handle successful login here
+        console.log('Login successful');
+      } else {
+        // Handle login failure here
+        console.error('Login failed');
+      }
+    } catch (error) {
+      console.error('Error during login:', error);
+    }
+  };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">
+    <div className="bg-cover bg-center h-screen" style={{ backgroundImage: 'url(background.jpg)' }}>
+     <div className="min-h-screen flex items-center justify-center bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">
       <div className="max-w-md w-full space-y-8">
         <div>
           <img
-            className="mx-auto h-12 w-auto"
-            src="/assets/images/skanic.png"
-            alt="SMK Negeri 1 Ciomas"
+            className="mx-auto h-auto w-100px"
+            src={sarprasImage}
+            alt="sarpras"
           />
           <h2 className="mt-6 text-center text-3xl font-extrabold text-gray-900">
             Sarpras SMKN 1 Ciomas
@@ -73,16 +97,17 @@ const Login = () => {
 
           <div className="flex items-center mr-100">
             <div className="text-sm">
-              <a href="#" className="font-medium text-indigo-600 hover:text-indigo-500">
+              <a href="Readme.jsx" className="font-medium text-indigo-600 hover:text-indigo-500">
                 Wajib Baca!
               </a>
-              <a href="#" className="mr-50 font-medium text-indigo-600 hover:text-indigo-500">
+              <a href="Help.jsx" className="mx-1000 font-medium text-indigo-600 hover:text-indigo-500">
                 Help
               </a>
             </div>
           </div>
         </form>
       </div>
+    </div>
     </div>
   );
 };
