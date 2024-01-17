@@ -1,39 +1,100 @@
-import React, { useState } from 'react';
-import skanicImage from '../../assets/images/skanic.png';
-import sarprasImage from '../../assets/images/sarpras.png';
-//import API
-import Api from '../../api';
+import React, { useState, useEffect } from "react";
+import Api from "../../Api";
+import Cookies from "js-cookie";
+import { useNavigate } from "react-router-dom";
+import { faEnvelope, faLock } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import toast from "react-hot-toast";
+import sarprasImage from "../../assets/images/sarpras.png";
 
-const Login = () => {
-  const [username, setUsername] = useState('');
-  const [password, setPassword] = useState('');
+export default function Login() {
+  document.title = "Login - SI Sarpras";
 
-  const handleSubmit = async (e) => {
+  const navigate = useNavigate();
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [username, setUsername] = useState(""); // Add this line
+  const [rememberMe, setRememberMe] = useState(false);
+  const [errors, setErrors] = useState("");
+  const [loading, setLoading] = useState(false);
+
+  const handleRememberMeChange = () => {
+    setRememberMe(!rememberMe);
+  };
+
+  const token = Cookies.get("token");
+
+  useEffect(() => {
+    const token = Cookies.get("token");
+
+    if (token) {
+      navigate("/");
+    }
+  }, [navigate]);
+
+  if (token) {
+    return null; // Supaya render tidak dilanjutkan
+  }
+
+  const login = async (e) => {
     e.preventDefault();
+    setLoading(true);
 
     try {
-      const response = await fetch('YOUR_API_ENDPOINT', {
-        method: 'POST', // or 'GET', 'PUT', etc.
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ username, password }),
+      const response = await Api.post("/api/login", {
+        email: email,
+        password: password,
       });
 
-      if (response.ok) {
-        // Handle successful login here
-        console.log('Login successful');
-      } else {
-        // Handle login failure here
-        console.error('Login failed');
+      Cookies.set("token", response.data.token);
+      Cookies.set("user", JSON.stringify(response.data.user));
+      Cookies.set("permissions", JSON.stringify(response.data.permissions));
+      Cookies.set("role", response.data.roles[0]);
+
+      toast.success("Login Successfully!", {
+        position: "top-center",
+        duration: 4000,
+        style: {
+          background: "#4CAF50",
+          color: "#fff",
+          padding: "16px",
+        },
+        icon: "✔️",
+        iconTheme: {
+          primary: "white",
+          secondary: "#4CAF50",
+        },
+      });
+
+      const userRole = response.data.roles[0];
+
+      switch (userRole) {
+        case "admin":
+          navigate("/AdminDashboard");
+          break;
+        case "user":
+          navigate("/UserDashboard");
+          break;
+        default:
+          console.error("Role not recognized:", userRole);
+          navigate("/default-dashboard");
       }
     } catch (error) {
-      console.error('Error during login:', error);
+      if (error.response) {
+        setErrors(error.response.data.message);
+      } else if (error.request) {
+        setErrors("Network error. Please try again later.");
+      } else {
+        setErrors("An unexpected error occurred");
+      }
+    } finally {
+      setLoading(false);
     }
   };
 
   return (
-    <div className="bg-cover bg-center h-screen" style={{ backgroundImage: 'url(background.jpg)' }}>
+    // Applying background image and styling using Tailwind CSS
+    <div className="bg-cover bg-center h-screen" style={{ backgroundImage: 'url(assets\images\background.jpg)' }}>
      <div className="min-h-screen flex items-center justify-center bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">
       <div className="max-w-md w-full space-y-8">
         <div>
@@ -49,7 +110,7 @@ const Login = () => {
             SMK Negeri 1 Ciomas | SMK Pusat Keunggulan
           </p>
         </div>
-        <form onSubmit={handleSubmit} className="mt-8 space-y-6">
+        <form onSubmit={login} className="mt-8 space-y-6">
           <input type="hidden" name="remember" value="true" />
           <div className="rounded-md shadow-sm -space-y-px">
             <div>
@@ -84,8 +145,7 @@ const Login = () => {
                 placeholder="Password"
               />
             </div>
-          </div>
-
+          </div>   
           <div>
             <button
               type="submit"
@@ -108,8 +168,6 @@ const Login = () => {
         </form>
       </div>
     </div>
-    </div>
+   </div>
   );
-};
-
-export default Login;
+}

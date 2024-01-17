@@ -9,17 +9,10 @@ const Loader = lazy(() => import('../components/Loader.jsx'));
 
 //import view Login
 const Login = lazy(() => import('../views/Auth/Login.jsx'));
-
-//import view Help
-const Help = lazy(() => import('../views/Auth/Help.jsx'));
-
-//import view Readme
-const Readme = lazy(() => import('../views/Auth/Readme.jsx'));
-
+//
 //import view dashboard
 const UserDashboard = lazy(() => import('../views/Dashboard/UserDashboard.jsx'));
 const AdminDashboard = lazy(() => import('../views/Dashboard/AdminDashboard.jsx'));
-
 export default function RoutesIndex() {
   return (
     <Routes>

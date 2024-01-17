@@ -23,7 +23,7 @@ function Readme() {
         </button>
       </div>
     </div>
-  );
+  )
 }
 
 export default Readme;
