@@ -1,5 +1,7 @@
+// App.js
+import React from "react";
 import { Toaster } from "react-hot-toast";
-import  Routes  from "./routes";
+import Routes from "./routes/index";
 
 function App() {
   return (
@@ -7,7 +9,6 @@ function App() {
       <Routes />
       <Toaster />
     </div>
-    
   );
 }
 
