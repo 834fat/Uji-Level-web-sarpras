@@ -9,10 +9,12 @@ const Loader = lazy(() => import('../components/Loader.jsx'));
 
 //import view Login
 const Login = lazy(() => import('../views/Auth/Login.jsx'));
-//
-//import view dashboard
-const UserDashboard = lazy(() => import('../views/Dashboard/UserDashboard.jsx'));
-const AdminDashboard = lazy(() => import('../views/Dashboard/AdminDashboard.jsx'));
+
+/// Import your components
+import AdminDashboard from "../views/Dashboard/AdminDashboard.jsx";
+import UserDashboard from "../views/Dashboard/UserDashboard.jsx";
+
+// Define your routes
 export default function RoutesIndex() {
   return (
     <Routes>
