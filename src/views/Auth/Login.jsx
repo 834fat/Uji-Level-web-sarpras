@@ -2,8 +2,8 @@ import React, { useState, useEffect } from "react";
 import Api from "../../Api";
 import Cookies from "js-cookie";
 import { useNavigate } from "react-router-dom";
-import { faEnvelope, faLock } from "@fortawesome/free-solid-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+// import { faEnvelope, faLock } from "@fortawesome/free-solid-svg-icons";
+// import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"; 
 import toast from "react-hot-toast";
 import sarprasImage from "../../assets/images/sarpras.png";
 
@@ -13,10 +13,9 @@ export default function Login() {
   const navigate = useNavigate();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [username, setUsername] = useState(""); // Add this line
   const [rememberMe, setRememberMe] = useState(false);
   const [errors, setErrors] = useState("");
-  const [loading, setLoading] = useState(false);
+  
 
   const handleRememberMeChange = () => {
     setRememberMe(!rememberMe);
@@ -38,7 +37,7 @@ export default function Login() {
 
   const login = async (e) => {
     e.preventDefault();
-    setLoading(true);
+    // setLoading(true);
 
     try {
       const response = await Api.post("/api/login", {
@@ -88,7 +87,7 @@ export default function Login() {
         setErrors("An unexpected error occurred");
       }
     } finally {
-      setLoading(false);
+      // setLoading(false);
     }
   };
 
@@ -123,8 +122,8 @@ export default function Login() {
                 type="username"
                 autoComplete="username"
                 required
-                value={username}
-                onChange={(e) => setUsername(e.target.value)}
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
                 className="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-t-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
                 placeholder="Username"
               />
@@ -154,7 +153,6 @@ export default function Login() {
               Masuk
             </button>
           </div>
-
           <div className="flex items-center mr-100">
             <div className="text-sm">
               <a href="Readme.jsx" className="font-medium text-indigo-600 hover:text-indigo-500">
