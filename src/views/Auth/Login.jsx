@@ -1,11 +1,10 @@
 import React, { useState, useEffect } from "react";
 import Api from "../../Api";
 import Cookies from "js-cookie";
-import { useNavigate } from "react-router-dom";
-import { faEnvelope, faLock } from "@fortawesome/free-solid-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"; 
+import { useNavigate, Link } from "react-router-dom"; // Import Link
 import toast from "react-hot-toast";
-import sarprasImage from "../../assets/images/sarpras.png";
+import sarprasImage from "../../assets/images/sarpras2.png";
+import backgroundImage from "../../assets/images/background.jpg";
 
 export default function Login() {
   document.title = "Login - SI Sarpras";
@@ -13,31 +12,20 @@ export default function Login() {
   const navigate = useNavigate();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [rememberMe, setRememberMe] = useState(false);
   const [errors, setErrors] = useState("");
-  
-
-  const handleRememberMeChange = () => {
-    setRememberMe(!rememberMe);
-  };
+  const [loading, setLoading] = useState(false);
 
   const token = Cookies.get("token");
 
   useEffect(() => {
-    const token = Cookies.get("token");
-
     if (token) {
       navigate("/");
     }
-  }, [navigate]);
-
-  if (token) {
-    return null; // Supaya render tidak dilanjutkan
-  }
+  }, [token, navigate]);
 
   const login = async (e) => {
     e.preventDefault();
-    // setLoading(true);
+    setLoading(true);
 
     try {
       const response = await Api.post("/api/login", {
@@ -51,7 +39,7 @@ export default function Login() {
       Cookies.set("role", response.data.roles[0]);
 
       toast.success("Login Successfully!", {
-        position: "top-center",
+        position: "top-right",
         duration: 4000,
         style: {
           background: "#4CAF50",
@@ -87,85 +75,87 @@ export default function Login() {
         setErrors("An unexpected error occurred");
       }
     } finally {
-      // setLoading(false);
+      setLoading(false);
     }
   };
 
   return (
-    // Applying background image and styling using Tailwind CSS
-    <div className="bg-cover bg-center h-screen" style={{ backgroundImage: 'url(assets\images\background.jpg)' }}>
-     <div className="min-h-screen flex items-center justify-center bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">
-      <div className="max-w-md w-full space-y-8">
-        <div>
-          <img
-            className="mx-auto h-auto w-100px"
-            src={sarprasImage}
-            alt="sarpras"
-          />
-          <h2 className="mt-6 text-center text-3xl font-extrabold text-gray-900">
-            Sarpras SMKN 1 Ciomas
-          </h2>
-          <p className="mt-2 text-center text-sm text-gray-600">
-            SMK Negeri 1 Ciomas | SMK Pusat Keunggulan
-          </p>
+    <div className="relative">
+      <div className="absolute inset-0 z-0">
+        <img src={backgroundImage} alt="Background" className="w-full h-full object-cover" />
+      </div>
+      <div className="bg-opacity-50 relative z-10">
+        <div className="min-h-screen flex justify-center items-center">
+          <div className="flex flex-col lg:flex-row items-center">
+            <div className="lg:mr-8 mb-8 lg:mb-0 text-center lg:text-left pb-[200px]" style={{ fontFamily: "'Lexend Deca', sans-serif" }}>
+              <img
+                src={sarprasImage}
+                className="mb-3"
+                alt="Sarpras"
+                style={{ width: "400px", height: "auto"}}
+              />
+              <h1 className="mb-3 font-bold text-5xl text-white">Welcome To:</h1>
+              <p className="pr-3 text-white">Sistem Informasi Peminjaman Alat Sarana Dan Prasana Sekolah SMKN 1 Ciomas Kab.Bogor</p>
+            </div>
+            <div className="lg:ml-8">
+              <div className="p-12" style={{ background: "rgba( 255, 255, 255, 0.15 )", boxShadow: "0 8px 32px 0 rgba( 31, 38, 135, 0.37 )", backdropFilter: "blur( 5.5px )", WebkitBackdropFilter: "blur( 5.5px )", borderRadius: "10px", border: "1px solid rgba( 255, 255, 255, 0.18 )" }}>
+                <div className="mb-4">
+                  <h3 className="font-semibold text-2xl text-black-700 text-center">Login </h3>
+                  <p className="text-white text-center">Please login to your account.</p>
+                </div>
+                <form onSubmit={login} className="space-y-5">
+                  <div className="space-y-2">
+                    <label className="mb-2 text-sm font-medium text-black-700">Email</label>
+                    <input
+                      className="w-full px-4 py-2 text-base border border-gray-300 rounded-lg focus:outline-none focus:border-blue-400"
+                      type="email"
+                      placeholder="test@gmail.com"
+                      value={email}
+                      onChange={(e) => setEmail(e.target.value)}
+                    />
+                  </div>
+                  <div className="space-y-2">
+                    <label className="mb-2 text-sm font-medium text-black-700">Password</label>
+                    <input
+                      className="w-full px-4 py-2 text-base border border-gray-300 rounded-lg focus:outline-none focus:border-blue-400"
+                      type="password"
+                      placeholder="Enter your password"
+                      value={password}
+                      onChange={(e) => setPassword(e.target.value)}
+                    />
+                  </div>
+                  <hr />
+                  <div>
+                    <button
+                      type="submit"
+                      className="w-full flex justify-center bg-black hover:bg-blue-500 text-gray-100 p-3 rounded-full tracking-wide font-semibold shadow-lg cursor-pointer transition ease-in duration-500"
+                      disabled={loading}
+                    >
+                      {loading ? "Loading..." : "Masuk"}
+                    </button>
+                    <br />
+                    <div className="flex justify-between">
+                      <div className="text-sm">
+                        <Link to="/Readme" className="text-black-400 hover:text-blue-500">Wajib Baca!</Link>
+                      </div>
+                      <div className="text-sm">
+                        <Link to="/Help" className="text-black-400 hover:text-blue-500">Help?</Link>
+                      </div>
+                    </div>
+                  </div>
+                </form>
+                <div className="pt-5 text-center text-white text-xs">
+                  <span>
+                    {errors && <p className="text-red-500">{errors}</p>}
+                    &nbsp;
+                    Copyright © SARPRAS SKANIC
+                  </span>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
-        <form onSubmit={login} className="mt-8 space-y-6">
-          <input type="hidden" name="remember" value="true" />
-          <div className="rounded-md shadow-sm -space-y-px">
-            <div>
-              <label htmlFor="username" className="sr-only">
-                Username
-              </label>
-              <input
-                id="username"
-                name="username"
-                type="username"
-                autoComplete="username"
-                required
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                className="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-t-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
-                placeholder="Username"
-              />
-            </div>
-            <div>
-              <label htmlFor="password" className="sr-only">
-                Password
-              </label>
-              <input
-                id="password"
-                name="password"
-                type="password"
-                autoComplete="current-password"
-                required
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                className="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-b-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
-                placeholder="Password"
-              />
-            </div>
-          </div>   
-          <div>
-            <button
-              type="submit"
-              className="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
-            >
-              Masuk
-            </button>
-          </div>
-          <div className="flex items-center mr-100">
-            <div className="text-sm">
-              <a href="Readme.jsx" className="font-medium text-indigo-600 hover:text-indigo-500">
-                Wajib Baca!
-              </a>
-              <a href="Help.jsx" className="mx-1000 font-medium text-indigo-600 hover:text-indigo-500">
-                Help
-              </a>
-            </div>
-          </div>
-        </form>
       </div>
     </div>
-   </div>
   );
 }

@@ -1,29 +1,22 @@
 import React from 'react';
+import { MdPhoneIphone } from "react-icons/md";
 
-function Readme() {
+const Readme = () => {
   return (
-    <div className="flex flex-col items-center justify-center min-h-screen bg-gray-100">
-      <div className="text-center">
-        <p className="text-lg font-medium text-gray-800">
-          Wajib dibaca!!!
-        </p>
-        <p className="text-xl font-bold text-gray-900">
-          Web ini hanya bisa di akses seizin admin
-        </p>
-        <p className="text-lg font-medium text-gray-800">
-          Admin hanya memberi izin perwakilan kelas maksimal 3 orang / akun.
-        </p>
-        <p className="text-lg font-medium text-gray-800">
-          Kontak admin: <span className="text-blue-600">+62 1234-5678</span>
-        </p>
-      </div>
-      <div className="mt-6">
-        <button className="px-6 py-2 text-lg font-medium text-white bg-blue-600 rounded shadow hover:bg-blue-700">
-          Kembali kehalaman login
-        </button>
+    <div className="flex flex-col items-center justify-center h-screen">
+      <div className="bg-black p-8 rounded-lg shadow-md">
+        <p className="text-lg text-white font-semibold my-4">Wajib Baca!!!</p>
+        <hr></hr>
+        <p className="mb-4 text-white">Web ini hanya bisa di akses seizin admin dan</p>
+        <p className="mb-4 text-white">admin hanya memberi izin perwakilan kelas maksimal 3 orang/akun</p>
+        <div className="flex items-center mb-4 text-white">
+          <MdPhoneIphone className="mr-2" size={24} /> {/* Menampilkan icon dengan margin kanan */}
+          <p>Kontak Admin: +62 815-8490-3592 (Pak Kurnadi)</p>
+        </div>
+        <button className="bg-white hover:bg-blue-700 text-black py-2 px-4 rounded focus:outline-none focus:shadow-outline" onClick={() => window.history.back()}>Kembali ke Halaman Login</button>
       </div>
     </div>
-  )
-}
+  );
+};
 
 export default Readme;

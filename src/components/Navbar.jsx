@@ -1,6 +1,6 @@
 import { Link, useNavigate } from "react-router-dom";
 import { useState } from 'react';
-import Api from '../api';
+import Api from '../Api';
 import Cookies from 'js-cookie';
 import toast from 'react-hot-toast';
 
