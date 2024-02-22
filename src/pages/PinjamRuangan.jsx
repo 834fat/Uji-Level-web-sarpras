@@ -1,0 +1,106 @@
+import React, { useState } from 'react';
+import SidebarSiswa from '../components/SidebarSiswa';
+import { FaSignOutAlt, FaPlane } from 'react-icons/fa'; // Import icons
+import Swal from 'sweetalert2'; // Import SweetAlert
+import axios from 'axios';
+
+const PinjamRuangan = () => {
+    const [formData, setFormData] = useState({
+        nama_ruangan: '',
+        jumlah: ''
+    });
+
+    const handleChange = (e) => {
+        const { name, value } = e.target;
+        setFormData(prevState => ({
+            ...prevState,
+            [name]: value
+        }));
+    };
+
+    // Fungsi untuk submit form
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+        try {
+            await axios.post("http://127.0.0.1:8000/DataBarang", formData);
+            console.log("Data barang berhasil ditambahkan");
+            // Mengosongkan form setelah berhasil submit
+            setFormData({
+                nama_ruangan: '',
+                jumlah: ''
+            });
+            // Menampilkan notifikasi success
+            Swal.fire({
+                title: 'Success',
+                text: 'Data barang berhasil ditambahkan',
+                icon: 'success',
+                confirmButtonColor: '#3085d6',
+            });
+        } catch (error) {
+            console.error("Error adding barang:", error);
+            // Menampilkan notifikasi error
+            Swal.fire({
+                title: 'Error',
+                text: 'Terjadi kesalahan saat menambahkan data barang',
+                icon: 'error',
+                confirmButtonColor: '#3085d6',
+            });
+        }
+    };
+
+    // Fungsi untuk logout dengan notifikasi SweetAlert
+    const handleLogout = () => {
+        Swal.fire({
+            title: 'Logout',
+            text: 'Apakah Anda yakin ingin logout?',
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Ya, logout',
+            cancelButtonText: 'Batal'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                // Kode untuk logout
+                console.log("Logout berhasil!");
+            }
+        });
+    };
+
+    return (
+        <div className="flex">
+            <SidebarSiswa />
+            <div className="flex-1 p-4">
+                <div className="bg-[#F5F5F5] rounded-lg shadow-md p-4 relative">
+                    <h1 className="text-xl font-semibold mb-4">Pinjam Ruangan</h1>
+                    <div className="absolute top-0 right-0 mt-[25px] mr-[60px]"> {/* Mengubah posisi tombol logout */}
+                        <button onClick={handleLogout} className="bg-gray-500 hover:bg-red-600 text-white py-2 px-4 rounded-md flex items-center">
+                            <span>Logout</span>
+                            <FaSignOutAlt className="ml-2" />
+                        </button>
+                    </div>
+                </div>
+                <div className="flex justify-center items-center h-screen pb-[150px]">
+                    <div className="bg-[#F5F5F5] rounded-lg shadow-md p-6">
+                        <form onSubmit={handleSubmit}>
+                            <div className="mb-4">
+                                <label htmlFor="nama_ruangan" className="block text-sm font-medium text-gray-700">Nama Ruangan</label>
+                                <input type="text" id="nama_ruangan" name="nama_ruangan" value={formData.nama_ruangan} onChange={handleChange} className="mt-1 block w-full rounded-md border border-black shadow-sm focus:border-indigo-500 focus:ring focus:ring-indigo-200 focus:ring-opacity-50" />
+                            </div>
+                            <div className="mb-4">
+                                <label htmlFor="jumlah" className="block text-sm font-medium text-gray-700">Jumlah Ruangan</label>
+                                <input type="number" id="jumlah" name="jumlah" value={formData.jumlah} onChange={handleChange} className="mt-1 block w-full rounded-md border border-black shadow-sm focus:border-indigo-500 focus:ring focus:ring-indigo-200 focus:ring-opacity-50" />
+                            </div>
+                            <button type="submit" className="bg-green-500 hover:bg-blue-600 text-white py-2 px-4 rounded-md flex items-center">
+                                <span>Submit</span>
+                                <FaPlane className="ml-2" />
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    );
+};
+
+export default PinjamRuangan;
